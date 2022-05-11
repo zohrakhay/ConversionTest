@@ -1,6 +1,9 @@
+import 'package:conversiontest/ui/providers/currency_provider.dart';
+import 'package:conversiontest/ui/services/currency_service.dart';
 import 'package:conversiontest/ui/views/main_screen.dart';
 import 'package:conversiontest/ui/widgets/exchange_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class InitialScreen extends StatefulWidget {
   // This widget is the home page of your application. It is stateful, meaning
@@ -19,7 +22,25 @@ class InitialScreen extends StatefulWidget {
 class _InitialScreenState extends State<InitialScreen> {
   final TextEditingController _fromValueController = TextEditingController();
   final TextEditingController _toValueController = TextEditingController();
+  CurrencyService currencyService = CurrencyService();
+  _getCurrencies() async {
+    var provider = Provider.of<CurrencyProvider>(context, listen: false);
+    var response = await CurrencyService.getCurrencies();
+    // print('AAAAAAAAAAAAA');
+    // print(response);
+    provider.setCurrenciessList(response);
+    // print("*********");
+    // print(provider.currenciessList);
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    _getCurrencies();
+  }
+
+  String dropdownValue = 'TND';
+  String dropdownValue1 = 'USD';
   @override
   Widget build(BuildContext context) {
     double deviceWidth = MediaQuery.of(context).size.width;
@@ -51,7 +72,7 @@ class _InitialScreenState extends State<InitialScreen> {
                           borderSide: BorderSide(color: Color.fromARGB(255, 205, 201, 201), width: 2.0),
                         ),
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color.fromARGB(255, 205, 201, 201), width: 2.0),
+                          borderSide: BorderSide.none,
                         ),
                         fillColor: Color.fromARGB(255, 205, 201, 201),
                         filled: true,
@@ -67,22 +88,30 @@ class _InitialScreenState extends State<InitialScreen> {
                     child: Row(
                       children: [
                         SizedBox(
-                          height: deviceWidth * 0.1,
-                          width: deviceWidth * 0.2,
-                          child: TextField(
-                            controller: _fromValueController,
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 205, 201, 201), width: 2.0),
-                              ),
-                              border: OutlineInputBorder(),
-                              fillColor: Color.fromARGB(255, 205, 201, 201),
-                              filled: true,
-                              hintText: 'From',
-                            ),
-                          ),
-                        ),
+                            height: deviceWidth * 0.1,
+                            width: deviceWidth * 0.2,
+                            child: Consumer<CurrencyProvider>(builder: (_, provider, __) {
+                              return DropdownButton<String>(
+                                value: dropdownValue,
+                                icon: const Icon(
+                                  Icons.arrow_downward,
+                                  size: 15,
+                                ),
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    dropdownValue = newValue!;
+                                  });
+                                },
+                                items: provider.currenciessList.map<DropdownMenuItem<String>>((value) {
+                                  return DropdownMenuItem(
+                                    value: value.code,
+                                    child: Text(value.code),
+                                  );
+                                }).toList(),
+                              );
+                            })),
                         GestureDetector(
                           onTap: () {},
                           child: Container(
@@ -95,22 +124,30 @@ class _InitialScreenState extends State<InitialScreen> {
                           ),
                         ),
                         SizedBox(
-                          height: deviceWidth * 0.1,
-                          width: deviceWidth * 0.2,
-                          child: TextField(
-                            controller: _toValueController,
-                            keyboardType: TextInputType.number,
-                            decoration: const InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(255, 205, 201, 201), width: 2.0),
-                              ),
-                              border: OutlineInputBorder(),
-                              fillColor: Color.fromARGB(255, 205, 201, 201),
-                              filled: true,
-                              hintText: 'To',
-                            ),
-                          ),
-                        ),
+                            height: deviceWidth * 0.1,
+                            width: deviceWidth * 0.2,
+                            child: Consumer<CurrencyProvider>(builder: (_, provider, __) {
+                              return DropdownButton<String>(
+                                value: dropdownValue1,
+                                icon: const Icon(
+                                  Icons.arrow_downward,
+                                  size: 15,
+                                ),
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                onChanged: (String? newValue) {
+                                  setState(() {
+                                    dropdownValue1 = newValue!;
+                                  });
+                                },
+                                items: provider.currenciessList.map<DropdownMenuItem<String>>((value) {
+                                  return DropdownMenuItem(
+                                    value: value.code,
+                                    child: Text(value.code),
+                                  );
+                                }).toList(),
+                              );
+                            })),
                       ],
                     )),
               ),
