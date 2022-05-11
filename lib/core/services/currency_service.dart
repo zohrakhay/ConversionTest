@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:conversiontest/ui/models/currency.dart';
+import 'package:conversiontest/core/models/currency.dart';
 import 'package:http/http.dart' as http;
 
 class CurrencyService {

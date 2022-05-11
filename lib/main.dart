@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:conversiontest/ui/providers/currency_provider.dart';
-import 'package:conversiontest/ui/services/currency_service.dart';
+import 'package:conversiontest/core/providers/currency_provider.dart';
+import 'package:conversiontest/core/services/currency_service.dart';
 import 'package:conversiontest/ui/views/initial_screen.dart';
 import 'package:conversiontest/ui/views/splash_screen.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,4 @@
-import 'package:conversiontest/ui/models/currency.dart';
+import 'package:conversiontest/core/models/currency.dart';
 import 'package:flutter/foundation.dart';
 
 class CurrencyProvider extends ChangeNotifier {

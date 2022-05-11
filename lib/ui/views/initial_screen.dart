@@ -1,5 +1,5 @@
-import 'package:conversiontest/ui/providers/currency_provider.dart';
-import 'package:conversiontest/ui/services/currency_service.dart';
+import 'package:conversiontest/core/providers/currency_provider.dart';
+import 'package:conversiontest/core/services/currency_service.dart';
 import 'package:conversiontest/ui/views/main_screen.dart';
 import 'package:conversiontest/ui/widgets/exchange_widget.dart';
 import 'package:flutter/material.dart';
